@@ -1,19 +1,29 @@
-/* TradeSim — global canvas: deep dark + subtle purple glow at top */
+/* TradeSim — global canvas */
 
 :root {
   color-scheme: dark;
 
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto,
-    sans-serif;
-  --font-mono: 'SF Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', ui-monospace, Consolas, monospace;
 
-  --ink: #f4f2ff;
-  --ink-muted: #9b94b3;
-  --surface-deep: #05040a;
-  --surface-card: rgba(18, 16, 32, 0.65);
-  --line: rgba(255, 255, 255, 0.08);
-  --glow-purple: rgba(139, 92, 246, 0.45);
-  --glow-magenta: rgba(192, 38, 211, 0.25);
+  /* Core palette */
+  --pink:       #e040fb;
+  --pink-bright: #f500ff;
+  --pink-dim:   #b91fc7;
+  --pink-glow:  rgba(224, 64, 251, 0.35);
+  --green:      #00e676;
+  --red:        #ff1744;
+  --ink:        #ffffff;
+  --ink-muted:  #a0a0b0;
+  --ink-dim:    #5a5a6e;
+
+  /* Surfaces */
+  --bg:         #0a0a0a;
+  --surface:    #111111;
+  --surface-2:  #181818;
+  --surface-3:  #1e1e1e;
+  --border:     rgba(255, 255, 255, 0.08);
+  --border-2:   rgba(255, 255, 255, 0.12);
 
   font-family: var(--font-sans);
   font-size: 16px;
@@ -24,41 +34,25 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
-html {
-  min-height: 100%;
-}
+html { min-height: 100%; }
 
 body {
   margin: 0;
   min-height: 100svh;
   color: var(--ink-muted);
-  background-color: var(--surface-deep);
-  background-image:
-    radial-gradient(ellipse 130% 90% at 50% -25%, rgba(124, 58, 237, 0.42) 0%, transparent 52%),
-    radial-gradient(ellipse 70% 55% at 100% 0%, rgba(168, 85, 247, 0.18) 0%, transparent 50%),
-    radial-gradient(ellipse 55% 40% at 0% 5%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
-    linear-gradient(180deg, #070510 0%, var(--surface-deep) 42%, #030208 100%);
-  background-attachment: fixed;
+  background-color: var(--bg);
 }
 
 #root {
   min-height: 100svh;
   width: 100%;
-  max-width: none;
-  margin: 0;
   display: flex;
   flex-direction: column;
 }
 
-p {
-  margin: 0;
-}
+p { margin: 0; }
 
 .sr-only {
   position: absolute;
@@ -67,7 +61,7 @@ p {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0,0,0,0);
   white-space: nowrap;
   border: 0;
 }
