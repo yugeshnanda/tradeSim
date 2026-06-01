@@ -1,78 +1,92 @@
-<<<<<<< HEAD
-# React + TypeScript + Vite
+# TradeSim — Paper Trading Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A beginner-friendly paper trading platform where users practice buying and selling stocks with $100,000 in virtual cash. No real money, no risk.
 
-Currently, two official plugins are available:
+**Live:** https://trade-sim-blond.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Paper Trading** — Simulate buy/sell orders at real market prices with instant fills
+- **Live Quotes** — Real-time stock prices via Finnhub API (AAPL, TSLA, NVDA, GOOGL, AMZN, META, AMD, NFLX, COIN, MSFT)
+- **Portfolio Dashboard** — Track cash balance, open positions, P&L, and trade history
+- **Leaderboard** — Compete with other users ranked by portfolio return
+- **Auth** — Email/password and Google OAuth via Supabase
+- **Pricing** — Free tier + Pro subscription ($9/month via Stripe — coming soon)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19 + TypeScript + Vite |
+| Routing | React Router v7 |
+| Auth & Database | Supabase (Postgres + RLS) |
+| Market Data | Finnhub API |
+| Payments | Stripe (coming soon) |
+| Hosting | Vercel |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Local Development
+
+### 1. Install dependencies
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 2. Set up environment variables
+Copy `.env.example` to `.env.local` and fill in your keys:
+```bash
+cp .env.example .env.local
 ```
-=======
-# web
-Beginner-Frienldy AI assisted paper trading platform 
->>>>>>> 2e18af5fa1621bfbd3a48a5cad8027c1c362c2ae
+
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_FINNHUB_API_KEY=your-finnhub-key
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your-stripe-key
+```
+
+### 3. Set up the database
+Run the SQL in `src/lib/supabase-schema.sql` in your Supabase SQL Editor.
+
+### 4. Start the dev server
+```bash
+npm run dev
+```
+
+Open http://localhost:5173
+
+---
+
+## Database Schema
+
+- `profiles` — User profile extending Supabase auth (username, display name, tier)
+- `portfolios` — One per user, tracks cash balance (starts at $100,000)
+- `positions` — Open stock positions per portfolio (symbol, shares, avg cost)
+- `trades` — Full trade history (buy/sell, price, shares, timestamp)
+- `leaderboard` — View ranking all users by total portfolio return %
+
+All tables use Row Level Security — users can only access their own data.
+
+---
+
+## Deployment
+
+Deployed on Vercel. Every push to `main` triggers an automatic redeploy.
+
+Environment variables must be set in the Vercel dashboard (never commit `.env.local`).
+
+---
+
+## Roadmap
+
+- [ ] Stripe Pro subscription integration
+- [ ] Real-time price updates via WebSocket
+- [ ] Options and crypto simulation (Pro tier)
+- [ ] Advanced portfolio analytics (Pro tier)
+- [ ] Custom watchlists
+- [ ] Mobile responsive improvements
