@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { BookOpen, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, BarChart2 } from 'lucide-react'
+import { BookOpen, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Star } from 'lucide-react'
 import { LESSONS, CATEGORIES, CATEGORY_COLORS, type Lesson, type Category } from '../lib/lessons'
+import { useProgress } from '../context/ProgressContext'
+import { useAuth } from '../context/AuthContext'
 
 /* ── helpers ── */
 function diffColor(d: Lesson['difficulty']) {
@@ -10,11 +12,13 @@ function diffColor(d: Lesson['difficulty']) {
 }
 
 /* ── Quiz component ── */
-function Quiz({ lesson, onBack }: { lesson: Lesson; onBack: () => void }) {
+function Quiz({ lesson, onBack, onComplete }: { lesson: Lesson; onBack: () => void; onComplete: (score: number, total: number) => void }) {
   const [current, setCurrent] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
   const [answers, setAnswers] = useState<boolean[]>([])
   const [showResult, setShowResult] = useState(false)
+  const [xpEarned, setXpEarned] = useState(0)
+  const { completeLesson } = useProgress()
 
   const q = lesson.quiz[current]
   const total = lesson.quiz.length
@@ -31,6 +35,9 @@ function Quiz({ lesson, onBack }: { lesson: Lesson; onBack: () => void }) {
       setCurrent(current + 1)
       setSelected(null)
     } else {
+      const score = answers.filter(Boolean).length
+      completeLesson(lesson.id, score, total).then(setXpEarned)
+      onComplete(score, total)
       setShowResult(true)
     }
   }
@@ -47,6 +54,11 @@ function Quiz({ lesson, onBack }: { lesson: Lesson; onBack: () => void }) {
           {pct === 100 ? '🎉 Perfect score!' : pct >= 66 ? '👍 Good work!' : '📚 Keep studying!'}
         </h2>
         <p className="quiz-result-sub">{score} of {total} correct</p>
+        {xpEarned > 0 && (
+          <div className="xp-toast">
+            <Star size={14} /> +{xpEarned} XP earned!
+          </div>
+        )}
         <div className="quiz-result-actions">
           <button className="btn-pill btn-primary" onClick={onBack}>Back to lessons</button>
           <button className="btn-pill btn-outline" onClick={() => {
@@ -170,7 +182,7 @@ function LessonDetail({ lesson, onBack }: { lesson: Lesson; onBack: () => void }
           </div>
         </>
       ) : (
-        <Quiz lesson={lesson} onBack={() => setMode('read')} />
+        <Quiz lesson={lesson} onBack={() => setMode('read')} onComplete={() => {}} />
       )}
     </div>
   )
@@ -180,6 +192,8 @@ function LessonDetail({ lesson, onBack }: { lesson: Lesson; onBack: () => void }
 export default function Learn() {
   const [activeCategory, setActiveCategory] = useState<Category | 'All'>('All')
   const [openLesson, setOpenLesson] = useState<Lesson | null>(null)
+  const { completedLessonIds, xp, levelInfo } = useProgress()
+  const { user } = useAuth()
 
   const filtered = activeCategory === 'All'
     ? LESSONS
@@ -199,20 +213,31 @@ export default function Learn() {
         <div>
           <h1 className="page-title">Learn to Trade</h1>
           <p className="page-sub">
-            {LESSONS.length} lessons across stocks, strategy, risk, and psychology. Read then test yourself.
+            {LESSONS.length} lessons · Read, quiz yourself, earn XP
           </p>
         </div>
         <div className="learn-stats">
+          {user && (
+            <div className="learn-stat" style={{ color: levelInfo.color, borderColor: levelInfo.color + '44' }}>
+              <Star size={16} />
+              <span>{xp} XP · {levelInfo.emoji} {levelInfo.title}</span>
+            </div>
+          )}
           <div className="learn-stat">
-            <BookOpen size={18} />
-            <span>{LESSONS.length} lessons</span>
-          </div>
-          <div className="learn-stat">
-            <BarChart2 size={18} />
-            <span>{LESSONS.reduce((a, l) => a + l.quiz.length, 0)} quiz questions</span>
+            <BookOpen size={16} />
+            <span>{completedLessonIds.size}/{LESSONS.length} done</span>
           </div>
         </div>
       </div>
+
+      {/* Progress bar */}
+      {user && (
+        <div className="learn-overall-progress">
+          <div className="learn-progress-bar">
+            <div className="learn-progress-fill" style={{ width: `${(completedLessonIds.size / LESSONS.length) * 100}%` }} />
+          </div>
+        </div>
+      )}
 
       <div className="filter-tabs" style={{ marginBottom: '1.75rem' }}>
         {(['All', ...CATEGORIES] as const).map((cat) => (
@@ -234,7 +259,7 @@ export default function Learn() {
         {filtered.map((lesson) => (
           <button
             key={lesson.id}
-            className="lesson-card"
+            className={`lesson-card ${completedLessonIds.has(lesson.id) ? 'lesson-card-done' : ''}`}
             onClick={() => setOpenLesson(lesson)}
           >
             <div className="lesson-card-top">
@@ -246,6 +271,9 @@ export default function Learn() {
                 >
                   {lesson.category}
                 </span>
+                {completedLessonIds.has(lesson.id) && (
+                  <span className="lesson-done-badge"><CheckCircle size={12} /> Done</span>
+                )}
               </div>
             </div>
             <h3 className="lesson-card-title">{lesson.title}</h3>

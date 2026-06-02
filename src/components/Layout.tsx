@@ -1,10 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Search, TrendingUp, Trophy, LogOut, User, BookOpen } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { useProgress } from '../context/ProgressContext'
 import TickerBar from './TickerBar'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { user, profile, signOut } = useAuth()
+  const { streakCount, levelInfo, loading: progressLoading } = useProgress()
   const navigate = useNavigate()
 
   async function handleSignOut() {
@@ -56,6 +58,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div className="nav-actions">
+          {user && !progressLoading && (
+            <div className="nav-progress-chips">
+              <span className="nav-chip nav-streak" title="Daily streak">
+                🔥 {streakCount}
+              </span>
+              <span className="nav-chip nav-level" style={{ color: levelInfo.color }} title={`Level ${levelInfo.level}`}>
+                {levelInfo.emoji} {levelInfo.title}
+              </span>
+            </div>
+          )}
           {user ? (
             <div className="nav-user">
               <Link to="/profile" className="nav-avatar" aria-label="Profile">

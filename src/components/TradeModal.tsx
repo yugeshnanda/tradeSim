@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
-import { X } from 'lucide-react'
+import { X, Star } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import { useProgress } from '../context/ProgressContext'
+import { XP_REWARDS } from '../lib/gamification'
 import type { Quote } from '../pages/Markets'
 
 interface Props {
@@ -21,6 +23,7 @@ export default function TradeModal({ quote, portfolioId, onClose }: Props) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const { recordTrade } = useProgress()
 
   const shares = parseFloat(sharesInput) || 0
   const total = shares * quote.price
@@ -88,6 +91,7 @@ export default function TradeModal({ quote, portfolioId, onClose }: Props) {
 
     setSuccess(true)
     setSubmitting(false)
+    await recordTrade()
   }
 
   return (
@@ -106,6 +110,9 @@ export default function TradeModal({ quote, portfolioId, onClose }: Props) {
             <p className="success-msg">
               Order filled! {side === 'buy' ? 'Bought' : 'Sold'} {shares} share{shares !== 1 ? 's' : ''} of {quote.symbol} at {formatUsd(quote.price)}.
             </p>
+            <div className="xp-toast" style={{ margin: '0 auto 1rem' }}>
+              <Star size={13} /> +{XP_REWARDS.makeTrade} XP earned
+            </div>
             <button className="btn-pill btn-glow-secondary" onClick={onClose}>Done</button>
           </div>
         ) : (

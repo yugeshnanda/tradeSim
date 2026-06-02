@@ -1,6 +1,7 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
+import { ProgressProvider } from './context/ProgressContext'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 import Landing from './pages/Landing'
@@ -15,6 +16,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <ProgressProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<Landing />} />
@@ -33,6 +35,7 @@ export default function App() {
             />
           </Routes>
         </Layout>
+        </ProgressProvider>
       </AuthProvider>
     </BrowserRouter>
   )

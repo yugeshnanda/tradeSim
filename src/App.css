@@ -1091,3 +1091,246 @@
 .quiz-result-title { margin: 0 0 0.4rem; font-size: 1.5rem; font-weight: 800; color: var(--ink); }
 .quiz-result-sub { margin: 0 0 2rem; color: var(--ink-muted); }
 .quiz-result-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+/* —— Nav progress chips —— */
+.nav-progress-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.nav-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+.nav-streak { color: #f97316; }
+
+/* —— XP toast —— */
+.xp-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  background: rgba(224,64,251,0.15);
+  border: 1px solid rgba(224,64,251,0.35);
+  color: var(--pink);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* —— Game Hub Dashboard —— */
+.hub-page { max-width: 960px; margin: 0 auto; }
+
+.hub-greeting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.hub-title {
+  margin: 0 0 0.2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+.hub-subtitle { margin: 0; color: var(--ink-muted); font-size: 0.9rem; }
+
+/* XP card */
+.xp-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.xp-card-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+.level-emoji { font-size: 2rem; flex-shrink: 0; }
+.level-title { font-size: 0.875rem; font-weight: 700; color: var(--ink); margin-bottom: 0.4rem; }
+.xp-bar-wrap { display: flex; align-items: center; gap: 0.75rem; }
+.xp-bar { flex: 1; height: 6px; background: var(--surface-3); border-radius: 9999px; overflow: hidden; min-width: 120px; max-width: 240px; }
+.xp-bar-fill { height: 100%; border-radius: 9999px; transition: width 0.6s ease; }
+.xp-label { font-size: 0.7rem; color: var(--ink-dim); white-space: nowrap; }
+.xp-card-right { display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-end; }
+.xp-stat { display: flex; align-items: center; gap: 0.35rem; font-size: 0.8125rem; color: var(--ink-muted); }
+.xp-stat.streak { color: #f97316; }
+
+/* Stats row */
+.hub-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.hub-stat-card {
+  padding: 1.1rem 1.25rem;
+  background: var(--surface);
+}
+.hub-stat-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 0.3rem; }
+.hub-stat-value { font-size: 1.35rem; font-weight: 800; color: var(--ink); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.hub-stat-change { display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; font-weight: 700; margin-top: 0.2rem; }
+.hub-stat-change.up { color: var(--green); }
+.hub-stat-change.down { color: var(--red); }
+
+/* Two-col grid for sections */
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.hub-section { padding: 1.4rem; background: var(--surface); }
+.hub-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.hub-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.section-icon-fire { color: #f97316; }
+.hub-section-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--ink-dim);
+}
+.hub-section-link { font-size: 0.75rem; color: var(--pink); text-decoration: none; }
+.hub-section-link:hover { text-decoration: underline; }
+.hub-empty { color: var(--ink-dim); font-size: 0.875rem; display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+.hub-empty-card { padding: 1rem; background: var(--surface-2); border-radius: 8px; text-align: center; }
+
+/* Daily challenges */
+.challenges-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.challenge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: var(--surface-2);
+  transition: background 0.15s;
+}
+.challenge-done { opacity: 0.6; }
+.challenge-emoji { font-size: 1.25rem; flex-shrink: 0; }
+.challenge-info { flex: 1; min-width: 0; }
+.challenge-title { font-size: 0.875rem; font-weight: 700; color: var(--ink); margin: 0; }
+.challenge-desc { font-size: 0.75rem; color: var(--ink-dim); margin: 0.1rem 0 0; }
+.challenge-right { flex-shrink: 0; }
+.challenge-check { color: var(--green); }
+.challenge-xp { font-size: 0.75rem; font-weight: 700; color: var(--pink); }
+
+/* Missions */
+.missions-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.mission-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+.mission-emoji { font-size: 1.25rem; flex-shrink: 0; }
+.mission-info { flex: 1; min-width: 0; }
+.mission-title { font-size: 0.875rem; font-weight: 700; color: var(--ink); margin: 0; }
+.mission-desc { font-size: 0.75rem; color: var(--ink-dim); margin: 0.1rem 0 0; }
+.mission-xp { font-size: 0.75rem; font-weight: 700; color: var(--pink); flex-shrink: 0; }
+
+/* Next lesson card */
+.next-lesson-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border-radius: 10px;
+  background: rgba(224,64,251,0.08);
+  border: 1px solid rgba(224,64,251,0.25);
+  text-decoration: none;
+  transition: background 0.15s;
+  margin-bottom: 1rem;
+}
+.next-lesson-card:hover { background: rgba(224,64,251,0.14); }
+.next-lesson-emoji { font-size: 1.5rem; flex-shrink: 0; }
+.next-lesson-title { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.15rem; }
+.next-lesson-meta { font-size: 0.75rem; color: var(--pink); margin: 0; }
+.next-lesson-arrow { color: var(--pink); margin-left: auto; flex-shrink: 0; }
+
+.lesson-progress-bar-wrap { display: flex; align-items: center; gap: 0.75rem; }
+.lesson-progress-bar { flex: 1; height: 4px; background: var(--surface-3); border-radius: 9999px; overflow: hidden; }
+.lesson-progress-fill { height: 100%; background: var(--pink); border-radius: 9999px; transition: width 0.5s ease; }
+.lesson-progress-label { font-size: 0.7rem; color: var(--ink-dim); white-space: nowrap; }
+
+/* Recent trades in hub */
+.recent-trades-list { display: flex; flex-direction: column; gap: 0.4rem; }
+.recent-trade-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8125rem;
+}
+.recent-trade-row:last-child { border-bottom: none; }
+.rt-symbol { font-weight: 700; color: var(--ink); flex: 1; }
+.rt-amount { color: var(--ink); font-variant-numeric: tabular-nums; }
+.rt-date { color: var(--ink-dim); font-size: 0.7rem; }
+
+/* Learn page overall progress bar */
+.learn-overall-progress { margin-bottom: 1.5rem; }
+.learn-progress-bar { height: 6px; background: var(--surface-2); border-radius: 9999px; overflow: hidden; }
+.learn-progress-fill { height: 100%; background: var(--pink); border-radius: 9999px; transition: width 0.5s; }
+
+/* Lesson done badge */
+.lesson-done-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(0,230,118,0.12);
+  color: var(--green);
+  border: 1px solid rgba(0,230,118,0.3);
+}
+.lesson-card-done { opacity: 0.8; }
+.lesson-card-done .lesson-card-title { text-decoration: line-through; text-decoration-color: var(--ink-dim); }
