@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, TrendingUp, Trophy, LogOut, User } from 'lucide-react'
+import { Search, TrendingUp, Trophy, LogOut, User, BookOpen } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import TickerBar from './TickerBar'
 
@@ -28,6 +28,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Link to="/leaderboard" className="nav-link">
             <Trophy size={14} />
             Leaderboard
+          </Link>
+          <Link to="/learn" className="nav-link">
+            <BookOpen size={14} />
+            Learn
           </Link>
           {user && (
             <Link to="/dashboard" className="nav-link">

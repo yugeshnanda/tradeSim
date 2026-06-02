@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard'
 import Markets from './pages/Markets'
 import Leaderboard from './pages/Leaderboard'
 import Pricing from './pages/Pricing'
+import Learn from './pages/Learn'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/markets" element={<Markets />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/learn" element={<Learn />} />
             <Route
               path="/dashboard"
               element={
