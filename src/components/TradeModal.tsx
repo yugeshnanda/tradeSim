@@ -3,6 +3,7 @@ import { X, Star } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useProgress } from '../context/ProgressContext'
 import { XP_REWARDS } from '../lib/gamification'
+import ShareTrade from './ShareTrade'
 import type { Quote } from '../pages/Markets'
 
 interface Props {
@@ -113,7 +114,9 @@ export default function TradeModal({ quote, portfolioId, onClose }: Props) {
             <div className="xp-toast" style={{ margin: '0 auto 1rem' }}>
               <Star size={13} /> +{XP_REWARDS.makeTrade} XP earned
             </div>
-            <button className="btn-pill btn-glow-secondary" onClick={onClose}>Done</button>
+            {/* Share buttons — viral loop */}
+            <ShareTrade symbol={quote.symbol} shares={shares} side={side} price={quote.price} />
+            <button className="btn-pill btn-glow-secondary" onClick={onClose} style={{ marginTop: '0.75rem' }}>Done</button>
           </div>
         ) : (
           <>

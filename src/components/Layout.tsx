@@ -53,6 +53,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               placeholder="Search symbols…"
               autoComplete="off"
               aria-label="Search markets"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  const val = (e.target as HTMLInputElement).value.trim()
+                  if (val) navigate(`/markets?q=${encodeURIComponent(val)}`)
+                }
+              }}
             />
           </div>
         </div>
@@ -102,14 +108,34 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <main className="main">{children}</main>
 
-      <footer className="footer">
-        <p className="footer-text">
-          © {new Date().getFullYear()} TradeSim · Paper trading for educational purposes only. Not financial advice.
-        </p>
-        <nav className="footer-links" aria-label="Footer">
+      <footer className="footer footer-full">
+        <div className="footer-brand">
+          <span className="nav-logo" aria-hidden style={{ width: 24, height: 24, fontSize: '0.7rem' }} />
+          <div>
+            <p className="footer-name">TradeSim</p>
+            <p className="footer-tagline">Learn to invest. Risk free.</p>
+          </div>
+        </div>
+        <nav className="footer-links" aria-label="Footer navigation">
+          <Link to="/markets">Markets</Link>
+          <Link to="/leaderboard">Leaderboard</Link>
+          <Link to="/learn">Learn</Link>
           <Link to="/pricing">Pricing</Link>
-          <a href="mailto:support@tradesim.app">Support</a>
         </nav>
+        <div className="footer-right">
+          <a
+            href="https://github.com/yugeshnanda/tradeSim"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-gh"
+            aria-label="GitHub"
+          >
+            ⚡ Built by Yugesh Nandakumar
+          </a>
+          <p className="footer-disclaimer">
+            Not financial advice. For educational purposes only.
+          </p>
+        </div>
       </footer>
 
       <TickerBar />

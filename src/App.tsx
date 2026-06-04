@@ -11,6 +11,8 @@ import Markets from './pages/Markets'
 import Leaderboard from './pages/Leaderboard'
 import Pricing from './pages/Pricing'
 import Learn from './pages/Learn'
+import TradeHistory from './pages/TradeHistory'
+import EmailCapture from './components/EmailCapture'
 
 export default function App() {
   return (
@@ -33,8 +35,18 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/trade-history"
+              element={
+                <ProtectedRoute>
+                  <TradeHistory />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </Layout>
+        {/* Email capture modal — fires 30s after first visit */}
+        <EmailCapture />
         </ProgressProvider>
       </AuthProvider>
     </BrowserRouter>

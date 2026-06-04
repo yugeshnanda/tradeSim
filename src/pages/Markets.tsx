@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Search, TrendingUp, TrendingDown, Flame, Clock } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import TradeModal from '../components/TradeModal'
+import Sparkline, { seedSparkline } from '../components/Sparkline'
+import Tooltip, { DEFINITIONS } from '../components/Tooltip'
 import { ALL_STOCKS, SECTORS, SECTOR_COLORS, STOCK_MAP, type Sector } from '../lib/stocks'
 
 export interface Quote {
@@ -29,6 +31,16 @@ function formatVol(n: number) {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`
   return n.toString()
+}
+
+// Deterministic fake market cap from symbol seed
+function fakeMarketCap(symbol: string, price: number): string {
+  const seed = symbol.split('').reduce((a, c) => a + c.charCodeAt(0), 0)
+  const sharesB = 0.5 + (seed % 30)          // 0.5B – 30B shares
+  const cap = price * sharesB * 1e9
+  if (cap >= 1e12) return `$${(cap / 1e12).toFixed(1)}T`
+  if (cap >= 1e9)  return `$${(cap / 1e9).toFixed(0)}B`
+  return `$${(cap / 1e6).toFixed(0)}M`
 }
 
 // Fetch quotes using Finnhub — batched in groups to avoid rate limits
@@ -88,9 +100,11 @@ type SortTab = 'trending' | 'volume' | 'hot'
 export default function Markets() {
   const { user } = useAuth()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
+  // Pre-fill search from nav bar query param (?q=AAPL)
+  const [search, setSearch] = useState(searchParams.get('q') ?? '')
   const [sortTab, setSortTab] = useState<SortTab>('trending')
   const [sectorFilter, setSectorFilter] = useState<typeof SECTORS[number]>('All')
   const [selected, setSelected] = useState<Quote | null>(null)
@@ -206,8 +220,10 @@ export default function Markets() {
             {filtered.map((q) => {
               const isUp = q.changePct >= 0
               const color = SECTOR_COLORS[q.sector]
+              const sparkData = seedSparkline(q.symbol, isUp)
               return (
                 <article key={q.symbol} className="stock-card" onClick={() => handleTradeClick(q)}>
+                  {/* Card header: avatar + name + sector */}
                   <div className="stock-card-head">
                     <div className="stock-avatar" style={{ background: color }} aria-hidden>
                       {q.symbol[0]}
@@ -224,6 +240,7 @@ export default function Markets() {
                     </span>
                   </div>
 
+                  {/* Price + change + sparkline */}
                   <div className="stock-metrics">
                     <div>
                       <p className="metric-label">Price</p>
@@ -236,17 +253,35 @@ export default function Markets() {
                         {formatPct(q.changePct)}
                       </p>
                     </div>
+                    <div className="stock-sparkline">
+                      <Sparkline data={sparkData} positive={isUp} width={72} height={28} />
+                    </div>
+                  </div>
+
+                  {/* Vol + Market Cap with tooltips */}
+                  <div className="stock-meta-row">
+                    <span className="stock-meta-item">
+                      <span className="meta-key">
+                        Vol <Tooltip term="Volume" explanation={DEFINITIONS['Volume']} />
+                      </span>
+                      <span className="meta-val">{q.volume > 0 ? formatVol(q.volume) : '—'}</span>
+                    </span>
+                    <span className="stock-meta-item">
+                      <span className="meta-key">
+                        Mkt Cap <Tooltip term="Market Cap" explanation={DEFINITIONS['Market Cap']} />
+                      </span>
+                      <span className="meta-val">{fakeMarketCap(q.symbol, q.price)}</span>
+                    </span>
                   </div>
 
                   <div className="stock-footer">
-                    {q.volume > 0 && <span className="stock-vol">Vol: {formatVol(q.volume)}</span>}
                     <button
                       type="button"
                       className="btn-pill btn-buy"
-                      style={{ padding: '0.35rem 0.9rem', fontSize: '0.8rem', marginLeft: 'auto' }}
+                      style={{ padding: '0.35rem 0.9rem', fontSize: '0.8rem', width: '100%' }}
                       onClick={(e) => { e.stopPropagation(); handleTradeClick(q) }}
                     >
-                      Trade
+                      Trade {q.symbol}
                     </button>
                   </div>
                 </article>

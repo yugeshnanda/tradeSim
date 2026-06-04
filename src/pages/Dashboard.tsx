@@ -6,6 +6,8 @@ import { useProgress } from '../context/ProgressContext'
 import { supabase } from '../lib/supabase'
 import { MISSIONS, getTodaysChallenges } from '../lib/gamification'
 import { LESSONS } from '../lib/lessons'
+import ProBanner from '../components/ProBanner'
+import Tooltip, { DEFINITIONS } from '../components/Tooltip'
 
 const STARTING_BALANCE = 100_000
 
@@ -99,7 +101,10 @@ export default function Dashboard() {
       {/* ── Stats row ── */}
       <div className="hub-stats">
         <div className="hub-stat-card">
-          <p className="hub-stat-label">Portfolio Value</p>
+          <p className="hub-stat-label">
+            Portfolio Value
+            <Tooltip term="Portfolio" explanation={DEFINITIONS['Portfolio']} />
+          </p>
           <p className="hub-stat-value">{formatUsd(totalValue)}</p>
           <p className={`hub-stat-change ${isUp ? 'up' : 'down'}`}>
             {isUp ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
@@ -107,12 +112,20 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="hub-stat-card">
-          <p className="hub-stat-label">Cash Available</p>
+          <p className="hub-stat-label">
+            Cash Available
+            <Tooltip term="Cash Balance" explanation={DEFINITIONS['Cash Balance']} />
+          </p>
           <p className="hub-stat-value">{formatUsd(portfolio?.cash_balance ?? STARTING_BALANCE)}</p>
         </div>
         <div className="hub-stat-card">
-          <p className="hub-stat-label">Lessons Done</p>
-          <p className="hub-stat-value">{completedLessonIds.size} <span style={{ fontSize: '1rem', color: 'var(--ink-muted)' }}>/ {LESSONS.length}</span></p>
+          <p className="hub-stat-label">
+            P&amp;L
+            <Tooltip term="P&L" explanation={DEFINITIONS['P&L']} />
+          </p>
+          <p className={`hub-stat-value ${isUp ? 'up-text' : 'down-text'}`}>
+            {isUp ? '+' : ''}{formatUsd(totalReturn)}
+          </p>
         </div>
         <div className="hub-stat-card">
           <p className="hub-stat-label">Trades Made</p>
@@ -216,7 +229,7 @@ export default function Dashboard() {
         <section className="hub-section">
           <div className="hub-section-head">
             <h2 className="hub-section-title">Recent Trades</h2>
-            <Link to="/dashboard/portfolio" className="hub-section-link">View all</Link>
+            <Link to="/trade-history" className="hub-section-link">View all</Link>
           </div>
           {recentTrades.length === 0 ? (
             <div className="hub-empty">
@@ -239,6 +252,9 @@ export default function Dashboard() {
           )}
         </section>
       </div>
+
+      {/* Pro upgrade banner — shown to all free users */}
+      <ProBanner />
     </div>
   )
 }
