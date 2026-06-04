@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { TrendingUp, TrendingDown, BookOpen, ChevronRight, Flame, Star, Target, CheckCircle } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useProgress } from '../context/ProgressContext'
@@ -23,6 +23,8 @@ export default function Dashboard() {
   const [recentTrades, setRecentTrades] = useState<{ symbol: string; side: string; total: number; executed_at: string }[]>([])
 
   const todaysChallenges = getTodaysChallenges()
+  const [searchParams] = useSearchParams()
+  const justUpgraded = searchParams.get('upgraded') === 'true'
 
   useEffect(() => {
     if (!user) return
@@ -59,6 +61,13 @@ export default function Dashboard() {
 
   return (
     <div className="hub-page">
+      {/* ── Pro upgrade success banner ── */}
+      {justUpgraded && (
+        <div className="upgrade-banner">
+          🎉 <strong>Welcome to Pro!</strong> Your account has been upgraded. All Pro features are now unlocked.
+        </div>
+      )}
+
       {/* ── Header greeting ── */}
       <div className="hub-greeting">
         <div>

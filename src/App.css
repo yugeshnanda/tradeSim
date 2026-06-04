@@ -1662,3 +1662,33 @@
   .hero-title { font-size: clamp(2rem, 8vw, 2.8rem); }
 }
 
+
+/* —— Pricing notices —— */
+.pricing-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-2);
+  color: var(--ink-muted);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+.pricing-notice-pro {
+  background: rgba(224,64,251,0.08);
+  border-color: rgba(224,64,251,0.3);
+  color: var(--pink);
+}
+
+/* —— Upgrade success banner —— */
+.upgrade-banner {
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  background: rgba(0,230,118,0.1);
+  border: 1px solid rgba(0,230,118,0.3);
+  color: var(--ink);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
